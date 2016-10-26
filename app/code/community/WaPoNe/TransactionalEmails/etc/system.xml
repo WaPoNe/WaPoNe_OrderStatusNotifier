@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<config>
+
+    <sections>
+        <transactionalemails translate="label" module="adminhtml">
+            <label>Transactional Emails</label>
+            <tab>dexhom</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>3</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <transactionalemails_group translate="label">
+                    <label>Transactional Emails</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>6</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <email translate="label">
+                            <label>Sender Email</label>
+                            <frontend_type>text</frontend_type>
+                            <validate>validate-email</validate>
+                            <backend_model>adminhtml/system_config_backend_email_address</backend_model>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                        </email>
+                        <name translate="label">
+                            <label>Sender Name</label>
+                            <frontend_type>text</frontend_type>
+                            <backend_model>adminhtml/system_config_backend_email_sender</backend_model>
+                            <validate>validate-emailSender</validate>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                        </name>
+                        <email_dest_status_change>
+                            <label>Receiver Emails (Status Change)</label>
+                            <comment><![CDATA[Insert receiver emails separeted by ';'<br />Do not insert ';' in the end.<br />Ex: it@dexhom.com;p.store@dexhom.com]]></comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>3</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </email_dest_status_change>
+                        <email_dest_new_customer>
+                            <label>Receiver Emails (New Customer)</label>
+                            <comment><![CDATA[Insert receiver emails separeted by ';'<br />Do not insert ';' in the end.<br />Ex: it@dexhom.com;p.store@dexhom.com]]></comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>4</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </email_dest_new_customer>
+                        <email_dest_wishlist>
+                            <label>Receiver Emails (Wishlist)</label>
+                            <comment><![CDATA[Insert receiver emails separeted by ';'<br />Do not insert ';' in the end.<br />Ex: it@dexhom.com;p.store@dexhom.com]]></comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>5</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </email_dest_wishlist>
+                    </fields>
+                </transactionalemails_group>
+            </groups>
+        </transactionalemails>
+    </sections>
+
+</config>
