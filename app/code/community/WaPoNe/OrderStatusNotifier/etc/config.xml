@@ -1,0 +1,47 @@
+<config>
+    <modules>
+        <WaPoNe_OrderStatusNotifier>
+            <version>1.0.0</version>
+        </WaPoNe_OrderStatusNotifier>
+    </modules>
+
+    <global>
+        <models>
+            <WaPoNe_OrderStatusNotifier>
+                <class>WaPoNe_OrderStatusNotifier_Model</class>
+            </WaPoNe_OrderStatusNotifier>
+        </models>
+        <events>
+            <sales_order_save_commit_after>
+                <observers>
+                    <mail_status_change>
+                        <type>singleton</type>
+                        <class>WaPoNe_OrderStatusNotifier/observer</class>
+                        <method>sendEmail</method>
+                    </mail_status_change>
+                </observers>
+            </sales_order_save_commit_after>
+        </events>
+        <template>
+            <email>
+                <wapone_order_status_notifier module="WaPoNe_OrderStatusNotifier">
+                    <label>Order Status Notifier</label>
+                    <file>wapone_order_status_notifier.html</file>
+                    <type>html</type>
+                </wapone_order_status_notifier>
+            </email>
+        </template>
+    </global>
+
+    <default>
+        <orderstatusnotifier>
+            <orderstatusnotifier_group>
+                <email>shop@dexhom.com</email>
+                <name>Dexhom</name>
+                <email_dest_status_change>sitoweb@dexhom.com;g.sales@dexhom.com;ed.sales@dexhom.com</email_dest_status_change>
+                <email_dest_new_customer>it@dexhom.com;p.store@dexhom.com</email_dest_new_customer>
+                <email_dest_wishlist>sitoweb@dexhom.com;g.sales@dexhom.com</email_dest_wishlist>
+            </orderstatusnotifier_group>
+        </orderstatusnotifier>
+    </default>
+</config>

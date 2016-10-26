@@ -2,7 +2,7 @@
 <config>
 
     <sections>
-        <transactionalemails translate="label" module="adminhtml">
+        <orderstatusnotifier translate="label" module="adminhtml">
             <label>Transactional Emails</label>
             <tab>dexhom</tab>
             <frontend_type>text</frontend_type>
@@ -11,7 +11,7 @@
             <show_in_website>1</show_in_website>
             <show_in_store>1</show_in_store>
             <groups>
-                <transactionalemails_group translate="label">
+                <orderstatusnotifier_group translate="label">
                     <label>Transactional Emails</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>6</sort_order>
@@ -63,9 +63,9 @@
                             <show_in_store>1</show_in_store>
                         </email_dest_wishlist>
                     </fields>
-                </transactionalemails_group>
+                </orderstatusnotifier_group>
             </groups>
-        </transactionalemails>
+        </orderstatusnotifier>
     </sections>
 
 </config>
