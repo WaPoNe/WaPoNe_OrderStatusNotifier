@@ -17,7 +17,7 @@
                     <mail_status_change>
                         <type>singleton</type>
                         <class>WaPoNe_OrderStatusNotifier/observer</class>
-                        <method>sendEmail</method>
+                        <method>notify</method>
                     </mail_status_change>
                 </observers>
             </sales_order_save_commit_after>

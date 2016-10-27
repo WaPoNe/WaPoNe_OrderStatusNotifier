@@ -1,51 +1,70 @@
 <?php
 /*
- * WaPoNe :: 07-06-2016
+ * WaPoNe :: 27-10-2016
  *
  * Gestione della mail da inviare quando un ordine passa nello stato 'PENDING PAYMENT' o 'CANCELED'
  */
 
-class Dexhom_TransactionalEmails_Model_Observer
+class WaPoNe_OrderStatusNotifier_Model_Observer
 {
-    //private $cdi_IPs = array('194.183.81.238', '95.225.83.222');
-    //private $products_viewed_list = array('148', '23403', '80059', '80', '84378');
 
-    public function sendEmail($event)
+    public function notify($event)
     {
         $order = $event->getOrder();
 
-        Mage::log('STATUS:'.$order->getState(), null, "dexhom.log");
+        //Order Statuses to notify
+        $statuses_to_notify = $this->_getStatuses('orderstatusnotifier/orderstatusnotifier_group/statuses');
 
-        // Se l'ordine passa nello stato 'PENDING PAYMENT' o 'CANCELED'
-        if ($order->getState() == Mage_Sales_Model_Order::STATE_CANCELED
-            || $order->getState() == Mage_Sales_Model_Order::STATE_NEW)
-            // Chiamo la funzione
-            $this->_sendStatusMail($order);
+        if (in_array($order->getStatus(), $statuses_to_notify)) {
+            // Send mail
+            $this->_sendEmail($order);
+        }
     }
 
-    private function _sendStatusMail($order)
+    /* WaPoNe (27-10-2016): Retrieving order statuses selected */
+    private function _getStatuses($param)
     {
-        Mage::log('Entrato in _sendStatusMail:'.$order->getState(), null, "dexhom.log");
+        $statuses = Mage::getStoreConfig($param);
+        $arr_result = array();
+
+        if (!empty($statuses)):
+            $arr_result = explode(",", $statuses);
+        endif;
+
+        return $arr_result;
+    }
+
+    private function _getOrderStatusLabel($orderStatus)
+    {
+        $orderStatusLabel = "";
+
+        $statuses = Mage::getModel('sales/order_status')->getResourceCollection()->getData();
+        foreach ($statuses as $status)
+        {
+            if($status["status"] == $orderStatus)
+                return $status["label"];
+        }
+        return $orderStatusLabel;
+    }
+
+    /* WaPoNe (27-10-2016): Sending email */
+    private function _sendEmail($order)
+    {
+        $orderStatusLabel = $this->_getOrderStatusLabel($order->getStatus());
 
         $emailTemplate  = Mage::getModel('core/email_template');
 
-        // Get email address (System->Configuration->Transactional Emails)
-        $salesData['email'] = Mage::getStoreConfig('transactionalemails/transactionalemails_group/email');
-        $salesData['name'] = Mage::getStoreConfig('transactionalemails/transactionalemails_group/name');
+        // Get sender email address (System->Configuration->Order Status Notifier)
+        $salesData['name'] = Mage::getStoreConfig('orderstatusnotifier/orderstatusnotifier_group/sender_name');
+        $salesData['email'] = Mage::getStoreConfig('orderstatusnotifier/orderstatusnotifier_group/sender_email');
+
         // Creo la lista dei destinatari
-        $destinatari = explode(";", Mage::getStoreConfig('transactionalemails/transactionalemails_group/email_dest_status_change'));
+        $destinatari = explode(";", Mage::getStoreConfig('orderstatusnotifier/orderstatusnotifier_group/receiver_emails'));
 
-        $store = Mage::app()->getStore();
+        $emailTemplate->loadDefault('wapone_order_status_notifier');
 
-        $emailTemplate->loadDefault('dexhom_order_status_change');
-
-        $email_subject = "";
         // Oggetto della mail
-        if($order->getState() == Mage_Sales_Model_Order::STATE_NEW):
-            $email_subject = "Dexhom: Ordine in attesa # ".$order->getIncrementId();
-        elseif($order->getState() == Mage_Sales_Model_Order::STATE_CANCELED):
-            $email_subject = "Dexhom: Ordine cancellato # ".$order->getIncrementId();
-        endif;
+        $email_subject = "Dexhom: Order #". $order->getIncrementId() ."in status ".$orderStatusLabel;
 
         $emailTemplate->setTemplateSubject($email_subject);
 
@@ -53,7 +72,7 @@ class Dexhom_TransactionalEmails_Model_Observer
         $emailTemplate->setSenderEmail($salesData['email']);
 
         $emailTemplateVariables['order'] = $order;
-        $emailTemplateVariables['store'] = $store;
+        $emailTemplateVariables['store'] = Mage::app()->getStore();
         // Setto 'frase_stato_ordine' che serve a scrivere la frase esatta nella mail
         if($order->getState() == Mage_Sales_Model_Order::STATE_NEW):
             $emailTemplateVariables['frase_stato_ordine'] = "sta effettuando il pagamento.";
@@ -64,17 +83,8 @@ class Dexhom_TransactionalEmails_Model_Observer
         $emailTemplateVariables['order_id'] = $order->getIncrementId();
         $emailTemplateVariables['store_name'] = $order->getStoreName();
         $emailTemplateVariables['store_url'] = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB);
-        $emailTemplateVariables['metodo_pagamento'] = $order->getPayment()->getMethodInstance()->getTitle();
-        //$emailTemplate->send($order->getCustomerEmail(), $order->getStoreName(), $emailTemplateVariables);
-
-        //Mage::log($order->debug(), NULL, 'custom_email_template.log', true);
+        $emailTemplateVariables[''] = $order->getPayment()->getMethodInstance()->getTitle();
 
         $emailTemplate->send($destinatari, $order->getStoreName(), $emailTemplateVariables);
-    }
-
-    public function clearCache($observer)
-    {
-        Mage::log('Entrato in Observer clearCache()', null, "dexhom.log");
-        Mage::app()->cleanCache();
     }
 }
