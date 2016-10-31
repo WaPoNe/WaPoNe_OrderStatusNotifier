@@ -58,33 +58,27 @@ class WaPoNe_OrderStatusNotifier_Model_Observer
         $salesData['name'] = Mage::getStoreConfig('orderstatusnotifier/orderstatusnotifier_group/sender_name');
         $salesData['email'] = Mage::getStoreConfig('orderstatusnotifier/orderstatusnotifier_group/sender_email');
 
-        // Creo la lista dei destinatari
-        $destinatari = explode(";", Mage::getStoreConfig('orderstatusnotifier/orderstatusnotifier_group/receiver_emails'));
+        // Get receiver email addresses (System->Configuration->Order Status Notifier)
+        $receivers = explode(";", Mage::getStoreConfig('orderstatusnotifier/orderstatusnotifier_group/receiver_emails'));
 
+        // Loading email template
         $emailTemplate->loadDefault('wapone_order_status_notifier');
 
-        // Oggetto della mail
-        $email_subject = "Dexhom: Order #". $order->getIncrementId() ."in status ".$orderStatusLabel;
-
-        $emailTemplate->setTemplateSubject($email_subject);
+        // Email Subject is set in the email template
+        // $emailTemplate->setTemplateSubject($email_subject);
 
         $emailTemplate->setSenderName($salesData['name']);
         $emailTemplate->setSenderEmail($salesData['email']);
 
         $emailTemplateVariables['order'] = $order;
         $emailTemplateVariables['store'] = Mage::app()->getStore();
-        // Setto 'frase_stato_ordine' che serve a scrivere la frase esatta nella mail
-        if($order->getState() == Mage_Sales_Model_Order::STATE_NEW):
-            $emailTemplateVariables['frase_stato_ordine'] = "sta effettuando il pagamento.";
-        elseif($order->getState() == Mage_Sales_Model_Order::STATE_CANCELED):
-            $emailTemplateVariables['frase_stato_ordine'] = "ha cancellato il pagamento.";
-        endif;
+        $emailTemplateVariables['order_status'] = $orderStatusLabel;
         $emailTemplateVariables['username']  = $order->getCustomerFirstname() . ' ' . $order->getCustomerLastname();
         $emailTemplateVariables['order_id'] = $order->getIncrementId();
         $emailTemplateVariables['store_name'] = $order->getStoreName();
         $emailTemplateVariables['store_url'] = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB);
-        $emailTemplateVariables[''] = $order->getPayment()->getMethodInstance()->getTitle();
+        $emailTemplateVariables['payment_method'] = $order->getPayment()->getMethodInstance()->getTitle();
 
-        $emailTemplate->send($destinatari, $order->getStoreName(), $emailTemplateVariables);
+        $emailTemplate->send($receivers, $order->getStoreName(), $emailTemplateVariables);
     }
 }

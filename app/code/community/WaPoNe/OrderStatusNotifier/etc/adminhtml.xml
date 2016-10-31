@@ -9,7 +9,7 @@
                             <config>
                                 <children>
                                     <orderstatusnotifier>
-                                        <title>Transactional Emails</title> <!-- Used in resources tree -->
+                                        <title>Order Status Notifier</title> <!-- Used in resources tree -->
                                     </orderstatusnotifier>
                                 </children>
                             </config>
