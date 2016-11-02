@@ -15,6 +15,8 @@ Please use the “Merge” upload mode. Do not replace the whole folders, but me
 
 ### Modman
 
+modman clone https://github.com/WaPoNe/WaPoNe_OrderStatusNotifier.git
+
 ### Composer
 
 ## User Guide
