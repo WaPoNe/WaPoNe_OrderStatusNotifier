@@ -20,6 +20,17 @@ Please use the “Merge” upload mode. Do not replace the whole folders, but me
 
 ### Composer
 
+1. First add repository to composer configuration.
+2. Require new package with composer.
+3. Enable module:
+```bash
+php bin/magento module:enable WaPoNe_OrderStatusNotifier
+```
+4. Flush everything:
+```bash
+php bin/magento setup:upgrade
+```
+
 ## User Guide
 
 ### Configuring extension
