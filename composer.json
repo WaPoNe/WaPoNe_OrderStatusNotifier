@@ -5,7 +5,8 @@
   "authors":[
     {
       "name":"Michele Fantetti",
-      "email":"michele.fantetti@gmail.com"
+      "email":"michele.fantetti@gmail.com",
+      "homepage": "http://www.fantetti.net"
     }
   ],
   "homepage":"https://github.com/WaPoNe/WaPoNe_OrderStatusNotifier",
