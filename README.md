@@ -15,7 +15,8 @@ Please use the “Merge” upload mode. Do not replace the whole folders, but me
 
 ### Modman
 
-modman clone https://github.com/WaPoNe/WaPoNe_OrderStatusNotifier.git
+1. modman clone https://github.com/WaPoNe/WaPoNe_OrderStatusNotifier.git
+2. Go to System — Cache Management page under Magento backend and click “Flush Cache Storage” button. After this action, the extension is installed.
 
 ### Composer
 
