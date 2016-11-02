@@ -2,7 +2,7 @@
 /*
  * WaPoNe :: 27-10-2016
  *
- * Gestione della mail da inviare quando un ordine passa nello stato 'PENDING PAYMENT' o 'CANCELED'
+ * Notify by e-mail of order status changes (statuses selected)
  */
 
 class WaPoNe_OrderStatusNotifier_Model_Observer
@@ -10,14 +10,20 @@ class WaPoNe_OrderStatusNotifier_Model_Observer
 
     public function notify($event)
     {
-        $order = $event->getOrder();
+        // Check 'wapone_orederstatusnotifier_prevent_observer' registry variable to prevent to fire observer more times
+        if(!Mage::registry('wapone_orederstatusnotifier_prevent_observer')) {
+            $order = $event->getOrder();
 
-        //Order Statuses to notify
-        $statuses_to_notify = $this->_getStatuses('orderstatusnotifier/orderstatusnotifier_group/statuses');
+            //Order Statuses to notify
+            $statuses_to_notify = $this->_getStatuses('orderstatusnotifier/orderstatusnotifier_group/statuses');
 
-        if (in_array($order->getStatus(), $statuses_to_notify)) {
-            // Send mail
-            $this->_sendEmail($order);
+            if (in_array($order->getStatus(), $statuses_to_notify)) {
+                // Send mail
+                $this->_sendEmail($order);
+            }
+
+            // Assign value to 'wapone_orederstatusnotifier_prevent_observer' registry variable
+            Mage::register('wapone_orederstatusnotifier_prevent_observer', true);
         }
     }
 
@@ -34,6 +40,7 @@ class WaPoNe_OrderStatusNotifier_Model_Observer
         return $arr_result;
     }
 
+    /* WaPoNe (27-10-2016): Retrieving order status label */
     private function _getOrderStatusLabel($orderStatus)
     {
         $orderStatusLabel = "";

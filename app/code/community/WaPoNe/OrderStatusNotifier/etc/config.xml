@@ -12,7 +12,7 @@
             </WaPoNe_OrderStatusNotifier>
         </models>
         <events>
-            <sales_order_save_commit_after>
+            <sales_order_save_after>
                 <observers>
                     <mail_status_change>
                         <type>singleton</type>
@@ -20,7 +20,7 @@
                         <method>notify</method>
                     </mail_status_change>
                 </observers>
-            </sales_order_save_commit_after>
+            </sales_order_save_after>
         </events>
         <template>
             <email>
