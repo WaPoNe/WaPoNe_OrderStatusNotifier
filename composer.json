@@ -2,6 +2,12 @@
   "name": "wapone/order-status-notifier",
   "description": "A Magento extension to notify when orders change their status",
   "type": "magento-module",
+  "authors":[
+    {
+      "name":"Michele Fantetti",
+      "email":"michele.fantetti@gmail.com"
+    }
+  ],
   "require": {
     "magento-hackathon/magento-composer-installer": "*"
   }
