@@ -1,5 +1,5 @@
 # WaPoNe_OrderStatusNotifier
-A Magento extension to notify, sending an email,  when orders change their status
+A Magento extension to notify, sending an email to custom receivers,  when orders change their status
 
 ##Installation
 
