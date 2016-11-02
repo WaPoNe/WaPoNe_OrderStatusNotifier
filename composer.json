@@ -8,6 +8,7 @@
       "email":"michele.fantetti@gmail.com"
     }
   ],
+  "homepage":"https://github.com/WaPoNe/WaPoNe_OrderStatusNotifier",
   "require": {
     "magento-hackathon/magento-composer-installer": "*"
   }
