@@ -1,10 +1,19 @@
 <?xml version="1.0"?>
 <config>
-
+    <tabs>
+        <WaPoNe translate="label">
+            <label><![CDATA[<div style="height: 10px;"><a href="http://www.fantetti.net" target="_blank">
+            <img id="wapone_block" src="" alt="" style="vertical-align:middle" /> WaPoNe</a></div>&nbsp;<script>
+            var n = SKIN_URL.indexOf("adminhtml");
+            $('wapone_block').src = SKIN_URL.substring(0, n) + "adminhtml/default/default/images/wapone/wapone.png";
+            </script>]]></label>
+            <sort_order>300</sort_order>
+        </WaPoNe>
+    </tabs>
     <sections>
-        <orderstatusnotifier translate="label" module="adminhtml">
+        <orderstatusnotifier translate="label">
             <label>Order Status Notifier</label>
-            <tab>wapone</tab>
+            <tab>WaPoNe</tab>
             <frontend_type>text</frontend_type>
             <sort_order>3</sort_order>
             <show_in_default>1</show_in_default>
@@ -56,5 +65,4 @@
             </groups>
         </orderstatusnotifier>
     </sections>
-
 </config>
